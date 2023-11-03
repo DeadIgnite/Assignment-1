@@ -19,7 +19,9 @@ public class PetDatabase {
             switch (getUserDecision()) {
                 case "1" -> showAllPets();
                 case "2" -> addPet();
-                case "3" -> {
+                case "3" -> searchByName();
+                case "4" -> searchByAge();
+                case "5" -> {
                     System.out.println("Thank you for using the Pet Database! Goodbye!");
                     System.exit(0);
                 }
@@ -32,7 +34,9 @@ public class PetDatabase {
         System.out.println("What would you like to do?");
         System.out.println("\t1) View all pets");
         System.out.println("\t2) Add more pets");
-        System.out.println("\t3) Exit program");
+        System.out.println("\t3) Search pets by name");
+        System.out.println("\t4) search pets by age");
+        System.out.println("\t5) Exit program");
         System.out.print("Your choice: ");
         // returns the users choice
         return s.next();
@@ -91,5 +95,41 @@ public class PetDatabase {
             // creates new pet object and adds it to list
             petList.add(new Pet(name, age));
         } while (true);
+    }
+
+    private static void searchByName() {
+        // gets name to search for
+        System.out.print("Enter the name you would like to search for: ");
+        String name = s.next();
+        printTableHeader();
+        int counter = 0;
+        // for each pet in the list
+        for (Pet pet : petList) {
+            // if the name matches the chosen name
+            if (pet.getName().equalsIgnoreCase(name)) {
+                // print a row
+                printTableRow(pet);
+                counter++;
+            }
+        }
+        printTableFooter(counter);
+    }
+
+    private static void searchByAge() {
+        // gets age to search for
+        System.out.print("Enter the age you would like to search for: ");
+        int age = s.nextInt();
+        printTableHeader();
+        int counter = 0;
+        // for each pet in the list
+        for (Pet pet : petList) {
+            // if the age matches the chosen age
+            if (pet.getAge() == age) {
+                // print a row
+                printTableRow(pet);
+                counter++;
+            }
+        }
+        printTableFooter(counter);
     }
 }
