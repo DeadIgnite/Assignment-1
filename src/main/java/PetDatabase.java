@@ -2,45 +2,70 @@
     Author: Cody Zellmer-Johnson
     Class: CSC 422
     Assignment: Version Control Pet Database
-    Release: 1
+    Release: 4
  */
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class PetDatabase {
     // list and scanner to be used throughout the application
-    private static final ArrayList<Pet> petList = new ArrayList<>();
+    private static ArrayList<Pet> petList;
     private static final Scanner s = new Scanner(System.in);
 
     public static void main(String[] args) {
+        loadPets();
         System.out.println("Pet Database Program.");
         // calls getUserDecision function and uses switch statement to call correct function
         do {
             switch (getUserDecision()) {
                 case "1" -> showAllPets();
                 case "2" -> addPet();
-                case "3" -> searchByName();
-                case "4" -> searchByAge();
-                case "5" -> updatePet();
-                case "6" -> removePet();
-                case "7" -> {
+                case "3" -> removePet();
+                case "4" -> {
                     System.out.println("Thank you for using the Pet Database! Goodbye!");
+                    savePets();
                     System.exit(0);
                 }
             }
         } while (true);
     }
 
+    private static void loadPets() {
+        File newFile = new File("pets.bin");
+        if (newFile.length() != 0) {
+            try {
+                FileInputStream fis = new FileInputStream(newFile);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                petList = (ArrayList<Pet>) ois.readObject();
+                ois.close(); fis.close();
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            petList = new ArrayList<>();
+        }
+    }
+
+    private static void savePets() {
+        File newFile = new File("pets.bin");
+        try {
+            FileOutputStream fos = new FileOutputStream(newFile);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(petList);
+            oos.close(); fos.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static String getUserDecision() {
         // prints table of choices
         System.out.println("What would you like to do?");
         System.out.println("\t1) View all pets");
-        System.out.println("\t2) Add more pets");
-        System.out.println("\t3) Search pets by name");
-        System.out.println("\t4) search pets by age");
-        System.out.println("\t5) Update an existing pet");
-        System.out.println("\t6) Remove an existing pet");
-        System.out.println("\t7) Exit program");
+        System.out.println("\t2) Add new pets");
+        System.out.println("\t3) Remove an existing pet");
+        System.out.println("\t4) Exit program");
         System.out.print("Your choice: ");
         // returns the users choice
         return s.next();
@@ -101,7 +126,7 @@ public class PetDatabase {
         } while (true);
     }
 
-    private static void searchByName() {
+    /*private static void searchByName() {
         // gets name to search for
         System.out.print("Enter the name you would like to search for: ");
         String name = s.next();
@@ -154,7 +179,7 @@ public class PetDatabase {
         pet.setName(name);
         pet.setAge(age);
         System.out.printf("%s %d.\n", pet.getName(), pet.getAge());
-    }
+    } */
 
     private static void removePet() {
         showAllPets();
