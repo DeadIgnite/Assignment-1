@@ -2,7 +2,7 @@
     Author: Cody Zellmer-Johnson
     Class: CSC 422
     Assignment: Version Control Pet Database
-    Release: 5
+    Release: 4
  */
 import java.io.*;
 import java.util.ArrayList;
@@ -111,31 +111,18 @@ public class PetDatabase {
     }
 
     private static void addPet() {
-        // clears the new line character left over
-        s.nextLine();
         do {
             // gets name and age
-            System.out.print("add pet (name age): ");
-            String pet = s.nextLine();
+            System.out.print("Enter the pet's name (type 'done' to exit): ");
+            String name = s.next();
             // if the user types done break the loop
-            if (pet.equalsIgnoreCase("done")) {
+            if (name.equalsIgnoreCase("done")) {
                 break;
             }
-            String[] petInfo = pet.split(" ");
-            // if database is full
-            if (petList.size() == 5) {
-                System.out.println("Error: Database is full.");
-                break;
-                // if the input does not contain exactly 2 values
-            } else if (petInfo.length != 2) {
-                System.out.println("Error: " + pet + " is not a valid input.");
-                // if the age is less than 1 or greater than 20
-            } else if(1 > Integer.parseInt(petInfo[1]) || Integer.parseInt(petInfo[1]) > 20) {
-                System.out.println("Error: " + petInfo[1] + " is not a valid age.");
-            } else {
-                // creates new pet object and adds it to list
-                petList.add(new Pet(petInfo[0], Integer.parseInt(petInfo[1])));
-            }
+            System.out.print("Enter the pet's age: ");
+            int age = s.nextInt();
+            // creates new pet object and adds it to list
+            petList.add(new Pet(name, age));
         } while (true);
     }
 
@@ -199,13 +186,9 @@ public class PetDatabase {
         // gets the desired ID
         System.out.print("Enter the ID of the pet you would like to remove: ");
         int id = s.nextInt();
-        if (id >= petList.size() || id <= 0) {
-            System.out.println("Error: ID " + id + " does not exist.");
-        } else {
-            // prints feedback for the user
-            System.out.printf("%s %d has been removed.\n", petList.get(id).getName(), petList.get(id).getAge());
-            // removes the pet from the list
-            petList.remove(id);
-        }
+        // prints feedback for the user
+        System.out.printf("%s %d has been removed.", petList.get(id).getName(), petList.get(id).getAge());
+        // removes the pet from the list
+        petList.remove(id);
     }
 }
