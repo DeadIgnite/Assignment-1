@@ -4,7 +4,7 @@ import java.io.Serializable;
     Author: Cody Zellmer-Johnson
     Class: CSC 422
     Assignment: Version Control Pet Database
-    Release: 1
+    Release: 5
  */
 public class Pet implements Serializable {
     private String name;
